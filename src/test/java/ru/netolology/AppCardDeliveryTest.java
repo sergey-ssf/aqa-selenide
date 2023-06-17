@@ -23,21 +23,25 @@ public class AppCardDeliveryTest {
 
     public void shouldRegisterTest() {
 
-        String dateEntered = generateDate(4, "dd.MM.yyyy");
+        int daysToAdd = 4;
+        String pattern = "dd.MM.yyyy";
+        String dateArranged = generateDate(daysToAdd, pattern);
 
         open("http://localhost:9999");
         $("[data-test-id='city'] input").setValue("Самара");
         actions().sendKeys(Keys.DOWN, Keys.ENTER).perform();
         // actions().sendKeys(Keys.DOWN, Keys.ENTER).perform();
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.CONTROL, Keys.SHIFT, Keys.LEFT), Keys.BACK_SPACE);
-        $("[data-test-id='date'] input").setValue(dateEntered);
+        $("[data-test-id='date'] input").setValue(dateArranged);
         $("[data-test-id='name'] input").setValue("Иванов Василий");
         $("[data-test-id='phone'] input").setValue("+79997654321");
         $("[data-test-id='agreement']").click();
         $(withText("Забронировать")).shouldBe(visible).click();
         // TODO:
-        $("[data-test-id='notification']").should(Condition.appear, Duration.ofMillis(15000));
-        $("[data-test-id='notification']").find(withText(dateEntered)).should(visible);
+        $(".notification__content")
+                .shouldHave(Condition.text("Встреча успешно забронирована на " + dateArranged), Duration.ofSeconds(15))
+                .shouldBe(Condition.visible);
+        //        $("[data-test-id='notification']").find(withText(dateEntered)).should(visible);
 
 
     }

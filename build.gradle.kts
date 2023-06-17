@@ -31,6 +31,3 @@ tasks.test {
     useJUnitPlatform()
 }
 
-tasks.withType<Test> {
-    systemProperty("selenide.headless", "true")
-}
